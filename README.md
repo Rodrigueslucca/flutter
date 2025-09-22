@@ -26,7 +26,8 @@ Este repositório é um espaço de aprendizado e experimentação. Estou começa
 - Primeiros widgets como `Text`, `Column`, `Row`, `Container`
 - Organização de arquivos e boas práticas iniciais
 - Comentários explicativos para facilitar o entendimento
+----
 
-
+1. Clone o repositório:
+   ```bash
    git clone https://github.com/Rodrigueslucca/flutter.git
-
