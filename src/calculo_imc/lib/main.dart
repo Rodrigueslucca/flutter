@@ -6,7 +6,7 @@ void main() {
     debugShowCheckedModeBanner: false,
   ),
   );
-}
+ }
 
 class Home extends StatefulWidget{
   const Home ({super.key});
@@ -69,4 +69,3 @@ class Home extends StatefulWidget{
       );
     }
   }
-
