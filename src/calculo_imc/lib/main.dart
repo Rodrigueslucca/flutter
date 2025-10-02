@@ -40,7 +40,8 @@ class Home extends StatefulWidget{
     @override
     Widget build(BuildContext context){
       return Scaffold(appBar: AppBar(
-        title: Text('Calculadora IMC'),
+        title: Text('Calculadora IMC',
+        style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: Colors.green,
         actions:[
@@ -62,6 +63,7 @@ class Home extends StatefulWidget{
           ),
            TextField(
             //definir o tipo de entrada
+            controller: pesoController,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
               labelText: "Peso Kg",
@@ -70,6 +72,7 @@ class Home extends StatefulWidget{
            ),
            TextField(
             //definir o tipo de entrada
+            controller: alturaController,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
               labelText: "Altura cm",
