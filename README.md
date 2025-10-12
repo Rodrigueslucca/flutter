@@ -28,6 +28,49 @@ Este repositório é um espaço de aprendizado e experimentação. Estou começa
 - Comentários explicativos para facilitar o entendimento
 ----
 
+🧠 Evolução do Projeto
+Além dos exemplos básicos, este repositório agora inclui aplicativos completos desenvolvidos com Flutter, cada um com funcionalidades específicas e objetivos distintos. Essa expansão representa meu progresso na jornada com Flutter e Dart.
+
+________________________________________________________________________________________________________
+
+📦 Aplicativos Desenvolvidos
+1. 💱 Conversor de Moedas
+App que permite converter valores entre diferentes moedas com base em taxas atualizadas.
+
+Conversão em tempo real
+
+Interface simples e responsiva
+
+Consumo de API para cotação
+
+📁 Local: src/app_conversor
+__________________________________________________________________________________________________________
+
+2. 🧮 Calculadora IMC
+Calcula o Índice de Massa Corporal com base na altura e peso do usuário.
+
+Cálculo automático com feedback visual
+
+Classificação por faixa de saúde
+
+Interface amigável
+
+📁 Local: src/calculo_imc
+___________________________________________________________________________________________________________
+
+3. 🛒 App Feirinha
+Aplicativo para gerenciamento de produtos em uma feirinha local.
+
+Cadastro e listagem de produtos
+
+Controle de preços e quantidades
+
+Ideal para pequenos comerciantes
+
+📁 Local: src/app_feirinha
+
+___________________________________________________________________________________________________________
+
 1. Clone o repositório:
    ```bash
    git clone https://github.com/Rodrigueslucca/flutter.git
