@@ -84,7 +84,7 @@ class _HomeState extends State<Home> {
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Colors.green,
+        backgroundColor: const Color.fromARGB(255, 231, 209, 8),
         actions: [
           IconButton(
             onPressed: _isLoading ? null : _buscarCotacao,
@@ -95,20 +95,27 @@ class _HomeState extends State<Home> {
       ),
 
       //inserir cor de fundo)
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 38, 37, 37),
       body: Column(
         //alinhamento centralizado
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(Icons.monetization_on, color: Colors.green, size: 120),
+          Icon(Icons.monetization_on, color: const Color.fromARGB(255, 231, 209, 8), size: 120),
           const SizedBox(height: 10),
           TextField(
             //definir o tipo de entrada
             controller: realController,
             keyboardType: TextInputType.number,
+            style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
               labelText: "Valor em Real: ",
-              labelStyle: TextStyle(color: Colors.green, fontSize: 25),
+              labelStyle: TextStyle(color: Colors.white, fontSize: 25),
+              prefixIcon: Padding(padding:  EdgeInsets.all(8.0),
+              child: ClipOval(
+              child: Image.asset('assets/images/bandeira-do-brasil.png', width: 32, height: 32, fit: BoxFit.cover),
+              ),
+              ),
+        
             ),
           ),
           TextField(
@@ -116,18 +123,24 @@ class _HomeState extends State<Home> {
             controller: dolarController,
             readOnly: true, //impede edição manual
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
+            style: const TextStyle(color: Colors.white),
+            decoration:  InputDecoration(
               labelText: "Cotação do Dólar: ",
-              labelStyle: TextStyle(color: Colors.green, fontSize: 25),
+              labelStyle: TextStyle(color: Colors.white, fontSize: 25),
+             prefixIcon: Padding(padding:  EdgeInsets.all(8.0),
+             child: ClipOval(
+              child: Image.asset('assets/images/bandeira-dos-estates.jpg', width:32, height:32, fit: BoxFit.cover),
+             ),
+             ),
             ),
           ),
           const SizedBox(height:20),
-          
+        
           //Botão
           ElevatedButton(
             onPressed: _isLoading ? null : _appConversor,
 
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+            style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 231, 209, 8),),
             child: const Text(
               "Converter",
               style: TextStyle(color: Colors.white, fontSize: 50),
@@ -137,10 +150,10 @@ class _HomeState extends State<Home> {
          const SizedBox(height: 30),
 
          //resultado
-          _isLoading ? const CircularProgressIndicator(color: Colors.green)
+          _isLoading ? const CircularProgressIndicator(color: Colors.white)
           : Text(
             _resultado,
-            style: const TextStyle(fontSize: 25, color: Colors.green),
+            style: const TextStyle(fontSize: 25, color: Colors.white),
           ),
         ],
       ),
