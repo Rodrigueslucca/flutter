@@ -19,24 +19,45 @@ class _HomeState extends State<Home> {
   final TextEditingController dolarController = TextEditingController();
 
   String _resultado = "";
+  bool _isLoading = false; //controla se está carregando a cotação
 
   Future<void> _buscarCotacao() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     final url = Uri.parse(
       'https://economia.awesomeapi.com.br/json/last/USD-BRL',
     );
-    final resposta = await http.get(url);
+    try {
+      final resposta = await http.get(url);
 
-    if (resposta.statusCode == 200) {
-      final dados = json.decode(resposta.body);
-      final cotacao = double.parse(dados['USDBRL']['bid']);
+      if (resposta.statusCode == 200) {
+        final dados = json.decode(resposta.body);
+        final cotacao = double.parse(dados['USDBRL']['bid']);
+        setState(() {
+          dolarController.text = cotacao.toStringAsFixed(2);
+        });
+      } else {
+        setState(() {
+          _resultado = "Erro ao buscar cotação(${resposta.statusCode})";
+        });
+      }
+    } catch (e) {
       setState(() {
-        dolarController.text = cotacao.toStringAsFixed(2);
+        _resultado = "Erro na conexão: $e";
       });
-    } else {
+    } finally {
       setState(() {
-        _resultado = "Erro ao buscar cotação!";
+        _isLoading = false;
       });
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _buscarCotacao(); //busca ao iniciar
   }
 
   void _appConversor() {
@@ -49,7 +70,7 @@ class _HomeState extends State<Home> {
       });
     } else {
       setState(() {
-        _resultado = "";
+        _resultado = "Informe valores válidos.";
       });
     }
   }
@@ -58,21 +79,29 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Conversor de Moedas',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         backgroundColor: Colors.green,
-        actions: [IconButton(onPressed: null, icon: Icon(Icons.refresh))],
+        actions: [
+          IconButton(
+            onPressed: _isLoading ? null : _buscarCotacao,
+            icon: Icon(Icons.refresh),
+            tooltip: "Atualizar cotação",
+          ),
+        ],
       ),
+
       //inserir cor de fundo)
       backgroundColor: Colors.white,
       body: Column(
         //alinhamento centralizado
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(Icons.person_outline, color: Colors.green, size: 120),
+          Icon(Icons.monetization_on, color: Colors.green, size: 120),
+          const SizedBox(height: 10),
           TextField(
             //definir o tipo de entrada
             controller: realController,
@@ -85,27 +114,34 @@ class _HomeState extends State<Home> {
           TextField(
             //definir o tipo de entrada
             controller: dolarController,
+            readOnly: true, //impede edição manual
             keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              labelText: "Valor em Dólar: ",
+            decoration: const InputDecoration(
+              labelText: "Cotação do Dólar: ",
               labelStyle: TextStyle(color: Colors.green, fontSize: 25),
             ),
           ),
-
+          const SizedBox(height:20),
+          
           //Botão
           ElevatedButton(
-            onPressed: () {
-              _buscarCotacao();
-              _appConversor();
-            }, //funcionamentoi do butão
+            onPressed: _isLoading ? null : _appConversor,
+
             style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-            child: Text(
+            child: const Text(
               "Converter",
               style: TextStyle(color: Colors.white, fontSize: 50),
             ),
           ),
-          SizedBox(height: 20),
-          Text(_resultado, style: TextStyle(fontSize: 25, color: Colors.green)),
+
+         const SizedBox(height: 30),
+
+         //resultado
+          _isLoading ? const CircularProgressIndicator(color: Colors.green)
+          : Text(
+            _resultado,
+            style: const TextStyle(fontSize: 25, color: Colors.green),
+          ),
         ],
       ),
     );
