@@ -1,53 +1,78 @@
 import 'package:flutter/material.dart';
+
 import 'models/bebida.dart';
 import 'services/api_service.dart';
 
-void main() => runApp(AppDistribuidora());
-
-class AppDistribuidora extends StatefulWidget {
-  @override
-  State<AppDistribuidora> createState() => _AppDistribuidoraState();
+void main() {
+  runApp(const MyApp());
 }
 
-class _AppDistribuidoraState extends State<AppDistribuidora> {
-  final ApiService api = ApiService();
-  late Future<List<Bebida>> futureBebidas;
-
-  @override
-  void initState() {
-    super.initState();
-    futureBebidas = api.listarBebidas();
-  }
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: Text('Distribuidora de Bebidas')),
-        body: FutureBuilder<List<Bebida>>(
-          future: futureBebidas,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting)
-              return Center(child: CircularProgressIndicator());
-            if (snapshot.hasError)
-              return Center(child: Text('Erro: ${snapshot.error}'));
+      title: 'App Distribuidora',
+      theme: ThemeData(primarySwatch: Colors.green),
+      home: const BebidasPage(),
+    );
+  }
+}
 
-            final bebidas = snapshot.data ?? [];
+class BebidasPage extends StatefulWidget {
+  const BebidasPage({super.key});
 
-            return ListView.builder(
-              itemCount: bebidas.length,
-              itemBuilder: (context, index) {
-                final b = bebidas[index];
-                return ListTile(
-                  leading: Image.network(b.imagem, width: 50, errorBuilder: (_, __, ___) => Icon(Icons.local_drink)),
-                  title: Text(b.nome),
-                  subtitle: Text('R\$ ${b.valor.toStringAsFixed(2)}'),
-                );
-              },
-            );
-          },
-        ),
+  @override
+  State<BebidasPage> createState() => _BebidasPageState();
+}
+
+class _BebidasPageState extends State<BebidasPage> {
+  final ApiService _service = ApiService();
+  late Future<List<Bebida>> _bebidas;
+
+  @override
+  void initState() {
+    super.initState();
+    _bebidas = _service.getBebidas();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Distribuidora de Bebidas')),
+      body: FutureBuilder<List<Bebida>>(
+        future: _bebidas,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Erro: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('Nenhuma bebida encontrada.'));
+          }
+
+          final bebidas = snapshot.data!;
+          return ListView.builder(
+            itemCount: bebidas.length,
+            itemBuilder: (context, index) {
+              final bebida = bebidas[index];
+              return Card(
+                margin: const EdgeInsets.all(10),
+                child: ListTile(
+                  leading: bebida.imagem.isNotEmpty
+                      ? Image.network(bebida.imagem, width: 60, fit: BoxFit.cover)
+                      : const Icon(Icons.local_drink, size: 40),
+                  title: Text(bebida.nome),
+                  subtitle: Text('R\$ ${bebida.valor.toStringAsFixed(2)}'),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }
 }
+
+
