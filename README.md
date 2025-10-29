@@ -58,19 +58,6 @@ Interface amigável
 📁 Local: src/calculo_imc
 ___________________________________________________________________________________________________________
 
-3. 🛒 App Feirinha
-Aplicativo para gerenciamento de produtos em uma feirinha local.
-
-Cadastro e listagem de produtos
-
-Controle de preços e quantidades
-
-Ideal para pequenos comerciantes
-
-📁 Local: src/app_feirinha
-
-___________________________________________________________________________________________________________
-
 1. Clone o repositório:
    ```bash
    git clone https://github.com/Rodrigueslucca/flutter.git
