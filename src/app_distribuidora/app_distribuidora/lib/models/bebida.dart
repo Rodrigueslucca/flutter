@@ -2,13 +2,13 @@ class Bebida {
   final int? id;
   final String nome;
   final double valor;
-  final String imagem;
+  final String imagemUrl;
 
   Bebida({
     required this.id,
     required this.nome,
     required this.valor,
-    required this.imagem,
+    required this.imagemUrl,
   });
 
   factory Bebida.fromJson(Map<String, dynamic> json) {
@@ -16,7 +16,7 @@ class Bebida {
       id: json['id'],
       nome: json['nome'],
       valor: json['valor'].toDouble(),
-      imagem: json['imagem'],
+      imagemUrl: json['imagem'],
     );
   }
 }
