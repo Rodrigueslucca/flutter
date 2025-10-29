@@ -15,8 +15,8 @@ class Bebida {
     return Bebida(
       id: json['id'],
       nome: json['nome'],
-      valor: json['valor'].toDouble(),
-      imagemUrl: json['imagem'],
+      valor: (json['valor'] as num) .toDouble(),
+      imagemUrl: json['imagemUrl'],
     );
   }
 }

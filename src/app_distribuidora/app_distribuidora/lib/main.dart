@@ -50,7 +50,7 @@ class _BebidasPageState extends State<BebidasPage> {
             return Center(child: Text('Erro: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text('Nenhuma bebida encontrada.'));
-          }
+          } else {
 
           final bebidas = snapshot.data!;
           return ListView.builder(
@@ -61,18 +61,22 @@ class _BebidasPageState extends State<BebidasPage> {
                 margin: const EdgeInsets.all(10),
                 child: ListTile(
                   leading: bebida.imagemUrl.isNotEmpty
-                      ? Image.network(bebida.imagemUrl, width: 60, fit: BoxFit.cover)
+                      ? Image.network(
+                          bebida.imagemUrl,
+                          width: 60,
+                          fit: BoxFit.cover,
+                        )
                       : const Icon(Icons.local_drink, size: 40),
                   title: Text(bebida.nome),
                   subtitle: Text('R\$ ${bebida.valor.toStringAsFixed(2)}'),
                 ),
               );
             },
+          
           );
+          }
         },
       ),
     );
   }
 }
-
-
