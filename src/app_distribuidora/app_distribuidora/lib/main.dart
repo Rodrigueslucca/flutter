@@ -37,6 +37,13 @@ class _BebidasPageState extends State<BebidasPage> {
     _bebidas = _service.getBebidas();
   }
 
+  String? _assetForBebida(Bebida bebida) {
+    final nome = bebida.nome.toLowerCase();
+    if (nome.contains('coca')) return 'assets/images/cocacola.jpg';
+    if (nome.contains('água') || nome.contains('agua')) return 'assets/images/agua_mineral.jpg';
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,29 +58,38 @@ class _BebidasPageState extends State<BebidasPage> {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text('Nenhuma bebida encontrada.'));
           } else {
-
-          final bebidas = snapshot.data!;
-          return ListView.builder(
-            itemCount: bebidas.length,
-            itemBuilder: (context, index) {
-              final bebida = bebidas[index];
-              return Card(
-                margin: const EdgeInsets.all(10),
-                child: ListTile(
-                  leading: bebida.imagemUrl.isNotEmpty
-                      ? Image.network(
-                          bebida.imagemUrl,
-                          width: 60,
-                          fit: BoxFit.cover,
-                        )
-                      : const Icon(Icons.local_drink, size: 40),
-                  title: Text(bebida.nome),
-                  subtitle: Text('R\$ ${bebida.valor.toStringAsFixed(2)}'),
-                ),
-              );
-            },
-          
-          );
+            final bebidas = snapshot.data!;
+            return ListView.builder(
+              itemCount: bebidas.length,
+              itemBuilder: (context, index) {
+                final bebida = bebidas[index];
+                final asset = _assetForBebida(bebida);
+                return Card(
+                  margin: const EdgeInsets.all(10),
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: ListTile(
+                    leading: bebida.imagemUrl.isNotEmpty
+                        ? Image.network(
+                            bebida.imagemUrl,
+                            width: 60,
+                            fit: BoxFit.cover,
+                          )
+                        : (asset != null
+                            ? Image.asset(
+                                asset,
+                                width: 60,
+                                fit: BoxFit.cover,
+                              )
+                            : const Icon(Icons.local_drink, size: 40)),
+                    title: Text(bebida.nome),
+                    subtitle: Text('R\$ ${bebida.valor.toStringAsFixed(2)}'),
+                  ),
+                );
+              },
+            );
           }
         },
       ),
