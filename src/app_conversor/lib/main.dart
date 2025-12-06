@@ -55,8 +55,11 @@ class _HomeState extends State<Home> {
         }
 
         setState(() {
-          // atualiza campo de cotação segundo direção atual
-          dolarController.text = (_isRealToDollar ? _cotacaoUsdBrl : _cotacaoBrlUsd).toStringAsFixed(4);
+          // atualiza campo de cotação sempre como BRL por USD
+          final cot = _cotacaoUsdBrl > 0
+              ? _cotacaoUsdBrl
+              : (_cotacaoBrlUsd > 0 ? 1 / _cotacaoBrlUsd : 0);
+          dolarController.text = cot.toStringAsFixed(4);
         });
       } else {
         setState(() {
@@ -108,9 +111,11 @@ class _HomeState extends State<Home> {
   void _toggleDirecao(bool novoValor) {
     setState(() {
       _isRealToDollar = novoValor;
-      // atualiza campo de cotação para a direção selecionada
-      final cot = _isRealToDollar ? _cotacaoUsdBrl : _cotacaoBrlUsd;
-      dolarController.text = (cot > 0 ? cot : 0).toStringAsFixed(4);
+      // mantém cotação exibida como BRL por USD
+      final cot = _cotacaoUsdBrl > 0
+          ? _cotacaoUsdBrl
+          : (_cotacaoBrlUsd > 0 ? 1 / _cotacaoBrlUsd : 0);
+      dolarController.text = cot.toStringAsFixed(4);
       // limpa resultado e valores para evitar confusão
       _resultado = "";
       // opcional: limpa o campo de valor
@@ -258,4 +263,3 @@ class _HomeState extends State<Home> {
     );
   }
 }
-// ...existing code...
